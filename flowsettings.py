@@ -331,8 +331,8 @@ GRAPHRAG_INDICES = [
 ]
 
 KH_INDICES = [
-    {
-        "name": "File Collection",
+     {
+        "name": "Search in Food Preparation",
         "config": {
             "supported_file_types": (
                 ".png, .jpeg, .jpg, .tiff, .tif, .pdf, .xls, .xlsx, .doc, .docx, "
@@ -342,5 +342,39 @@ KH_INDICES = [
         },
         "index_type": "ktem.index.file.FileIndex",
     },
-    *GRAPHRAG_INDICES,
+    {
+        "name": "Search Food Preservation",
+        "config": {
+            "supported_file_types": (
+                ".png, .jpeg, .jpg, .tiff, .tif, .pdf, .xls, .xlsx, .doc, .docx, "
+                ".pptx, .csv, .html, .mhtml, .txt, .md, .zip"
+            ),
+            "private": False,
+        },
+        "index_type": "ktem.index.file.FileIndex",
+    },
+    {
+        "name": "Search in Fabric Care",
+        "config": {
+            "supported_file_types": (
+                ".png, .jpeg, .jpg, .tiff, .tif, .pdf, .xls, .xlsx, .doc, .docx, "
+                ".pptx, .csv, .html, .mhtml, .txt, .md, .zip"
+            ),
+            "private": False,
+        },
+        "index_type": "ktem.index.file.FileIndex",
+    },
+    {
+        "name": "Search in Wellbeing",
+        "config": {
+            "supported_file_types": (
+                ".png, .jpeg, .jpg, .tiff, .tif, .pdf, .xls, .xlsx, .doc, .docx, "
+                ".pptx, .csv, .html, .mhtml, .txt, .md, .zip"
+            ),
+            "private": False,
+        },
+        "index_type": "ktem.index.file.FileIndex",
+    },
+    # Removed GRAPHRAG_INDICES. It's not used in the current version. This is what loads GRAPHRAG and LIGHTRAG. If you need it, uncomment it.
+    # *GRAPHRAG_INDICES,
 ]

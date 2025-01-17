@@ -175,18 +175,31 @@ class IndexManager:
                 return index is not None
 
         return False
-
+    
+    def reset_indices(self):
+        """Reset all indices by deleting existing ones"""
+        with Session(engine) as sess:
+            # Delete all indices from database
+            sess.query(Index).delete()
+            sess.commit()
+        
+        # Clear in-memory indices
+        self._indices = []
+        
     def on_application_startup(self):
         """This method is called by the base application when the application starts
-
         Load the index from database
         """
         self.load_index_types()
-
+        # Reset indices before creating new ones
+        
+        self.reset_indices()
+        # Create new indices from settings
+        
         for index in settings.KH_INDICES:
-            if not self.exists(name=index["name"]):
-                self.build_index(**index)
-
+            self.build_index(**index)
+            
+        # Start all indices
         with Session(engine) as sess:
             index_defs = sess.exec(select(Index))
             for index_def in index_defs:
