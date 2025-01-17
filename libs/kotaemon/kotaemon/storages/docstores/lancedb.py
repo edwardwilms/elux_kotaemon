@@ -98,16 +98,20 @@ class LanceDBDocumentStore(BaseDocumentStore):
         if not isinstance(ids, list):
             ids = [ids]
 
-        id_filter = ", ".join([f"'{_id}'" for _id in ids])
         try:
             document_collection = self.db_connection.open_table(self.collection_name)
-            query_filter = f"id in ({id_filter})"
-            docs = (
-                document_collection.search()
-                .where(query_filter)
-                .limit(MAX_DOCS_TO_GET)
-                .to_list()
-            )
+            # Build simple query filter with first ID only
+            if ids:
+                query_filter = f"id = '{ids[0]}'"
+                docs = (
+                    document_collection
+                    .search()
+                    .where(query_filter)
+                    .limit(MAX_DOCS_TO_GET)
+                    .to_list()
+                )
+            else:
+                docs = []
         except (ValueError, FileNotFoundError):
             docs = []
         return [
