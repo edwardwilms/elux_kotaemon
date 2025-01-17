@@ -172,7 +172,7 @@ class ChatPage(BasePage):
                         setattr(self, f"_index_{index.id}", index_ui)
 
                 if len(self._app.index_manager.indices) > 0:
-                    with gr.Accordion(label="Quick Upload") as _:
+                    with gr.Accordion(label="Quick Upload", visible=False) as _:
                         self.quick_file_upload = File(
                             file_types=list(KH_DEFAULT_FILE_EXTRACTORS.keys()),
                             file_count="multiple",
