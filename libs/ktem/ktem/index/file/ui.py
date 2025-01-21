@@ -1460,6 +1460,7 @@ class FileSelector(BasePage):
             choices=[],
             multiselect=True,
             container=False,
+            allow_custom_value=True,
             interactive=True,
             visible=False,
         )
@@ -1543,10 +1544,27 @@ class FileSelector(BasePage):
                 )
 
         if selected_files:
-            available_ids_set = set(available_ids)
-            selected_files = [
-                each for each in selected_files if each in available_ids_set
-            ]
+            available_ids_set = set(str(id) for id in available_ids)
+            # Handle both individual file IDs and group JSON strings
+            valid_files = []
+            for item in selected_files:
+                if isinstance(item, dict):
+                    # Already parsed JSON object
+                    if "files" in item:
+                        file_ids = item["files"]
+                        if isinstance(file_ids, list):
+                            valid_files.extend([str(id) for id in file_ids if str(id) in available_ids_set])
+                else:
+                    try:
+                        # Try parsing as JSON array for group files
+                        file_ids = json.loads(item)
+                        if isinstance(file_ids, list):
+                            valid_files.extend([str(id) for id in file_ids if str(id) in available_ids_set])
+                    except (json.JSONDecodeError, TypeError):
+                        # Handle individual file ID
+                        if str(item) in available_ids_set:
+                            valid_files.append(str(item))
+            selected_files = valid_files
 
         return gr.update(value=selected_files, choices=options), options
 
