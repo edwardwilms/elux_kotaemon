@@ -144,12 +144,34 @@ class SettingsPage(BasePage):
             None
         """
         if self._app.f_user_management:
+            def get_is_admin(user_id):
+                if user_id:
+                    with Session(engine) as session:
+                        statement = select(User).where(User.id == user_id)
+                        result = session.exec(statement).all()
+                        if result:
+                            return result[0].admin
+                return False
+
             self._app.subscribe_event(
                 name="onSignIn",
                 definition={
                     "fn": self.load_setting,
                     "inputs": self._user_id,
                     "outputs": [self._settings_state] + self.components(),
+                    "show_progress": "hidden",
+                },
+            )
+
+            self._app.subscribe_event(
+                name="onSignIn",
+                definition={
+                    "fn": lambda user_id: [
+                        gr.update(visible=get_is_admin(user_id)),
+                        gr.update(visible=get_is_admin(user_id))
+                    ],
+                    "inputs": self._user_id,
+                    "outputs": [self._index_tab, self._reasoning_tab],
                     "show_progress": "hidden",
                 },
             )
@@ -275,7 +297,7 @@ class SettingsPage(BasePage):
         #         self._components[f"index.{n}"] = obj
 
         id2name = {k: v.name for k, v in self._app.index_manager.info().items()}
-        with gr.Tab("Retrieval settings", visible=self._render_index_tab):
+        with gr.Tab("Retrieval settings", visible=self._render_index_tab) as self._index_tab:
             for pn, sig in self._default_settings.index.options.items():
                 name = id2name.get(pn, f"<id {pn}>")
                 with gr.Tab(name):
@@ -288,7 +310,7 @@ class SettingsPage(BasePage):
                             self._embeddings.append(obj)
 
     def reasoning_tab(self):
-        with gr.Tab("Reasoning settings", visible=self._render_reasoning_tab):
+        with gr.Tab("Reasoning settings", visible=self._render_reasoning_tab) as self._reasoning_tab:
             with gr.Group():
                 for n, si in self._default_settings.reasoning.settings.items():
                     if n == "use":

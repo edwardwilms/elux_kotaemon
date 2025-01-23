@@ -156,7 +156,7 @@ class App(BaseApp):
                 for k in self._tabs.keys():
                     if k == "login-tab":
                         tabs_update.append(gr.update(visible=False))
-                    elif k == "resources-tab":
+                    elif k == "resources-tab" or k == "indices-tab":
                         tabs_update.append(gr.update(visible=is_admin))
                     else:
                         tabs_update.append(gr.update(visible=True))

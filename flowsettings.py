@@ -69,6 +69,7 @@ KH_FEATURE_CHAT_SUGGESTION = config(
     "KH_FEATURE_CHAT_SUGGESTION", default=False, cast=bool
 )
 KH_FEATURE_USER_MANAGEMENT = config(
+    # This default controls the user management feature. If true, admin user can manage users.
     "KH_FEATURE_USER_MANAGEMENT", default=True, cast=bool
 )
 KH_USER_CAN_SEE_PUBLIC = None
