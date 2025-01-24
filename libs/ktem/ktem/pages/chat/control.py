@@ -93,6 +93,7 @@ class ConversationControl(BasePage):
                 scale=4,
                 elem_id="is-public-checkbox",
                 container=False,
+                visible=False,
             )
             self.btn_conversation_rn = gr.Button(
                 value="",
@@ -138,6 +139,22 @@ class ConversationControl(BasePage):
                 interactive=True,
                 visible=False,
             )
+
+        with gr.Row():
+            with gr.Column(scale=5, min_width=10):
+                gr.Markdown("### Instructions (Step by Step)")
+            
+        with gr.Row():
+            with gr.Column(scale=5, min_width=10):
+                gr.Markdown("""
+                    1. Choose what Product Line you want to chat about
+                    2. Choose between:
+                        - **Search All**: Search all the documents in the database
+                        - **Search In File(s):** Search in specific file(s)
+                            - Choose what file(s) you want to search in
+                    3. Type your question in the chat box
+                    4. For more precision, search in specific documents
+                """)
 
         self.chat_suggestion = ChatSuggestion(self._app)
 
