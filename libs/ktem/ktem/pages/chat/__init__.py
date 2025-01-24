@@ -201,10 +201,11 @@ class ChatPage(BasePage):
                         open=False,
                     ):
                         with gr.Row(elem_id="quick-setting-labels"):
-                            gr.HTML("Reasoning method")
-                            gr.HTML("Model")
+                            # Hiding the Chat Settings for now. Keeping Language settings
+                            # gr.HTML("Reasoning method")
+                            # gr.HTML("Model")
                             gr.HTML("Language")
-                            gr.HTML("Suggestion")
+                            # gr.HTML("Suggestion")
 
                         with gr.Row():
                             reasoning_type_values = [
@@ -217,6 +218,7 @@ class ChatPage(BasePage):
                                 value=DEFAULT_SETTING,
                                 container=False,
                                 show_label=False,
+                                visible=False,
                             )
                             self.model_type = gr.Dropdown(
                                 choices=self._app.default_settings.reasoning.options[
@@ -227,6 +229,7 @@ class ChatPage(BasePage):
                                 value="",
                                 container=False,
                                 show_label=False,
+                                visible=False,
                             )
                             self.language = gr.Dropdown(
                                 choices=[
@@ -243,6 +246,7 @@ class ChatPage(BasePage):
                                 label="Chat suggestion",
                                 container=False,
                                 elem_id="use-suggestion-checkbox",
+                                visible=False,
                             )
 
                             self.citation = gr.Dropdown(
@@ -257,6 +261,7 @@ class ChatPage(BasePage):
                                 show_label=False,
                                 interactive=True,
                                 elem_id="citation-dropdown",
+                                visible=False,
                             )
 
                             self.use_mindmap = gr.State(value=DEFAULT_SETTING)
